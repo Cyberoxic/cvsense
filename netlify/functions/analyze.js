@@ -14,7 +14,7 @@ export default async (req) => {
       });
 
     if (resumeText.length < 100)
-      return new Response(JSON.stringify({ error: "CV text too short. Make sure it's not a scanned image PDF." }), {
+      return new Response(JSON.stringify({ error: "Resume text too short. Make sure it's not a scanned image PDF." }), {
         status: 400, headers: { 'Content-Type': 'application/json' }
       });
 
@@ -46,12 +46,12 @@ Return ONLY this exact JSON structure, nothing else. No extra text, no markdown:
   "strengths": ["strength1", "strength2"],
   "quick_wins": ["win1", "win2"]
 }
-Rules: issues 3–6 items high→low, matched/missing 4–10 items, strengths 3–5, quick_wins 3–4.`;
+Rules: issues 3-6 items high to low, matched/missing 4-10 items, strengths 3-5, quick_wins 3-4.`;
 
     const groqResponse = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Content-Type':  'application/json',
+        'Content-Type': 'application/json',
         'Authorization': `Bearer ${GROQ_API_KEY}`
       },
       body: JSON.stringify({
@@ -61,7 +61,7 @@ Rules: issues 3–6 items high→low, matched/missing 4–10 items, strengths 3�
         response_format: { type: 'json_object' },
         messages: [
           { role: 'system', content: 'You are a resume analysis expert. Always respond with valid JSON only. No markdown, no explanation.' },
-          { role: 'user',   content: userPrompt }
+          { role: 'user', content: userPrompt }
         ]
       })
     });
@@ -72,11 +72,9 @@ Rules: issues 3–6 items high→low, matched/missing 4–10 items, strengths 3�
     }
 
     const groqData = await groqResponse.json();
-    const raw      = groqData.choices?.[0]?.message?.content || '';
-
+    const raw = groqData.choices?.[0]?.message?.content || '';
     if (!raw) throw new Error('Empty response from AI.');
 
-    // Robust JSON extraction
     let result;
     try {
       result = JSON.parse(raw);
