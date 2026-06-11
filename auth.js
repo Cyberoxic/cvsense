@@ -70,7 +70,7 @@ async function signInWithGoogle() {
   const { error } = await window._supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: window.location.origin + '/auth.html'
+      redirectTo: 'https://cv-analyst.netlify.app/auth.html'
     }
   });
 
