@@ -128,7 +128,7 @@ async function handleSignup(e) {
     password,
     options: {
       data: { full_name: name },
-      emailRedirectTo: window.location.origin + '/index.html'
+      emailRedirectTo: 'https://cv-analyst.netlify.app/index.html'
     }
   });
 
