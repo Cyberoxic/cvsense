@@ -6,11 +6,98 @@
   <title>CV Sense</title>
   <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/9346/9346212.png">
   <link rel="stylesheet" href="style.css" />
-
-  <!-- PDF.js — extracts text from PDF in the browser, free & open source -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <style>
+    /* Hide everything until session check completes */
+    body.auth-loading { visibility: hidden; }
+
+    /* Push page content below the user bar */
+    body { padding-top: 52px; }
+
+    /* ── User Bar ── */
+    .user-bar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 52px;
+      background: rgba(30, 30, 46, 0.96);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+      z-index: 100;
+    }
+
+    .user-bar-left {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .user-avatar {
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, var(--accent), var(--accent-mid));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+      letter-spacing: 0.5px;
+    }
+
+    .user-email {
+      font-size: 0.85rem;
+      color: var(--muted);
+      max-width: 220px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .user-bar-brand {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.1rem;
+      background: linear-gradient(45deg, var(--accent), var(--accent-mid));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.3px;
+    }
+
+    .signout-btn {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      border-radius: 8px;
+      padding: 0.3rem 0.85rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .signout-btn:hover {
+      border-color: var(--danger);
+      color: var(--danger);
+      background: var(--danger-light);
+    }
+  </style>
 </head>
-<body>
+<body class="auth-loading">
+
+  <!-- User Bar -->
+  <div class="user-bar" id="user-bar" style="display:none">
+    <div class="user-bar-left">
+      <div class="user-avatar" id="user-avatar">CV</div>
+      <span class="user-email" id="user-email"></span>
+    </div>
+    <span class="user-bar-brand">CV Sense</span>
+    <button class="signout-btn" onclick="signOut()">Sign Out</button>
+  </div>
 
   <header>
     <h1>CV Sense</h1>
@@ -59,5 +146,6 @@
   </div>
 
   <script src="app.js"></script>
+  <script src="session.js"></script>
 </body>
 </html>

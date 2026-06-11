@@ -1,12 +1,15 @@
-# netlify.toml
-# Tells Netlify how to build and serve your site
-
 [build]
-  publish = "."          # serve files from root folder
-  functions = "netlify/functions"  # where your backend functions live
+  publish   = "."
+  functions = "netlify/functions"
 
-# Make the function available at /api/analyze
+# Backend proxy for AI analysis
 [[redirects]]
-  from = "/api/analyze"
-  to = "/.netlify/functions/analyze"
+  from   = "/api/analyze"
+  to     = "/.netlify/functions/analyze"
+  status = 200
+
+# Redirect root to auth if needed (Supabase OAuth callback lands here)
+[[redirects]]
+  from   = "/auth"
+  to     = "/auth.html"
   status = 200
