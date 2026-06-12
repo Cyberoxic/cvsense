@@ -138,7 +138,7 @@ async function handleSignup(e) {
 
   // Genuine new signup
   showMessage(
-    '✅ Account created! Check your inbox (and spam folder) for a confirmation email from onboarding@resend.dev.',
+    '✅ Account created! Check your inbox (and spam folder) for a confirmation email',
     'success'
   );
   btn.disabled = true;
