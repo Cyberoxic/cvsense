@@ -18,7 +18,7 @@ _script.onload = async () => {
 
   if (!session) {
     // Not logged in — redirect to login
-    window.location.replace('/login');
+    window.location.replace('auth.html');
     return;
   }
 
@@ -29,7 +29,7 @@ _script.onload = async () => {
   // Keep session fresh — listen for auth changes
   window._supabase.auth.onAuthStateChange((event, session) => {
     if (event === 'SIGNED_OUT' || !session) {
-      window.location.replace('/login');
+      window.location.replace('auth.html');
     }
   });
 };
@@ -53,5 +53,5 @@ function showUserBar(user) {
 // ── Sign out ──
 async function signOut() {
   await window._supabase.auth.signOut();
-  window.location.replace('/login');
+  window.location.replace('auth.html');
 }
