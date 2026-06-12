@@ -145,7 +145,7 @@ async function handleSignup(e) {
 }
 
 // ── Friendly error messages ──
-function friendlyError(error) {
+function friendlyError(error) { // Supabase errors can be technical, so we map common ones to user-friendly messages
   const msg = (error.message || '').toLowerCase();
   if (msg.includes('already registered') || msg.includes('already exists') || msg.includes('user already'))
     return 'An account with this email already exists. Please sign in instead.';
