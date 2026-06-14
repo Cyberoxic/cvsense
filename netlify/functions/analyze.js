@@ -99,5 +99,3 @@ Rules: issues 3-6 items high to low, matched/missing 4-10 items, strengths 3-5, 
     });
   }
 };
-
-export const config = { path: '/api/analyze' };

@@ -18,7 +18,7 @@ document.head.appendChild(supabaseScript);
 async function checkExistingSession() {
   const { data: { session } } = await window._supabase.auth.getSession();
   if (session) {
-    window.location.href = 'index.html';
+    window.location.href = '/app';
     return;
   }
 
@@ -32,7 +32,7 @@ async function checkExistingSession() {
     if (error) {
       showMessage(friendlyError(error), 'error');
     } else {
-      window.location.href = 'index.html';
+      window.location.href = '/app';
     }
   }
 }
@@ -55,7 +55,7 @@ async function signInWithGoogle() {
 
   const { error } = await window._supabase.auth.signInWithOAuth({
     provider: 'google',
-    options: { redirectTo: SITE_URL + '/auth.html' }
+    options: { redirectTo: SITE_URL + '/login' }
   });
 
   if (error) {
@@ -84,7 +84,7 @@ async function handleLogin(e) {
     btn.textContent = 'Sign In';
   } else {
     showMessage('Signed in! Redirecting…', 'success');
-    setTimeout(() => window.location.href = 'index.html', 800);
+    setTimeout(() => window.location.href = '/app', 800);
   }
 }
 
@@ -105,7 +105,7 @@ async function handleSignup(e) {
     password,
     options: {
       data: { full_name: name },
-      emailRedirectTo: SITE_URL + '/auth.html'
+      emailRedirectTo: SITE_URL + '/login'
     }
   });
 

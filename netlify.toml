@@ -2,14 +2,26 @@
   publish   = "."
   functions = "netlify/functions"
 
-# Backend proxy for AI analysis
+# ── Backend proxy for AI analysis ──
 [[redirects]]
   from   = "/api/analyze"
   to     = "/.netlify/functions/analyze"
   status = 200
 
-# Redirect root to auth if needed (Supabase OAuth callback lands here)
+# ── Clean URLs (rewrites — serve the file but keep the pretty URL) ──
 [[redirects]]
-  from   = "/auth"
+  from   = "/login"
   to     = "/auth.html"
   status = 200
+
+[[redirects]]
+  from   = "/app"
+  to     = "/index.html"
+  status = 200
+
+# ── Root → login (302 redirect so browser shows /login) ──
+[[redirects]]
+  from   = "/"
+  to     = "/login"
+  status = 302
+  force  = true
