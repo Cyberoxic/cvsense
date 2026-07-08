@@ -1,7 +1,6 @@
-# Smart Resume Analyzer (Free — Powered by Groq)
+# Cvsense
 
 AI-powered resume analysis. 100% free via Groq API.
-No credit card. No quota issues. Fast.
 
 ---
 
