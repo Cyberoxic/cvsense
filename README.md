@@ -20,7 +20,7 @@ resume-analyzer-groq/
 
 1. **PDF.js** (free, open-source) extracts all text from your resume PDF in the browser
 2. That text is sent to **Groq's free API** with the job requirements
-3. **Llama 3.3 70B** (running on Groq) returns a structured JSON analysis
+3. **GPT OSS 120B** (running on Groq) returns a structured JSON analysis
 4. The app renders the results — score, verdict, issues, keywords, ATS scores
 
 ---
@@ -53,7 +53,7 @@ Double-click `index.html` in Chrome, Edge, or Firefox.
 
 | Model               | Requests/min | Tokens/min  | Requests/day |
 |---------------------|--------------|-------------|--------------|
-| llama-3.3-70b       | 30           | 6,000       | 1,000        |
+| gpt-oss-120b        | 30           | 8,000       | 1,000        |
 
 More than enough for personal use.
 
@@ -64,7 +64,7 @@ More than enough for personal use.
 - No quota activation issues
 - Faster responses (Groq uses custom AI chips)
 - No billing setup required at all
-- Llama 3.3 70B is a powerful open-source model
+- GPT OSS 120B is a powerful open-weight model
 
 ---
 
@@ -74,7 +74,7 @@ More than enough for personal use.
 |-------------|--------------------------------|-------|
 | HTML/CSS/JS | UI — zero frameworks           | Free  |
 | PDF.js      | Extract text from PDF          | Free  |
-| Groq API    | AI analysis (Llama 3.3 70B)    | Free  |
+| Groq API    | AI analysis (GPT OSS 120B)     | Free  |
 
 ---
 

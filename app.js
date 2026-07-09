@@ -134,7 +134,7 @@ async function analyzeLocal(resumeText, jobRequirements) {
       'Authorization': `Bearer ${LOCAL_API_KEY}`
     },
     body: JSON.stringify({
-      model: 'llama-3.3-70b-versatile',
+      model: 'openai/gpt-oss-120b',
       temperature: 0.1,   // lower = more predictable JSON output
       max_tokens: 1500,
       response_format: { type: 'json_object' }, // force JSON mode

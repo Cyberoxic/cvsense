@@ -55,7 +55,7 @@ Rules: issues 3-6 items high to low, matched/missing 4-10 items, strengths 3-5, 
         'Authorization': `Bearer ${GROQ_API_KEY}`
       },
       body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
+        model: 'openai/gpt-oss-120b',
         temperature: 0.1,
         max_tokens: 1500,
         response_format: { type: 'json_object' },
