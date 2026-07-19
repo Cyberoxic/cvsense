@@ -6,14 +6,6 @@
 pdfjsLib.GlobalWorkerOptions.workerSrc =
   'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-// ── LOCAL DEV KEY ────────────────────────────
-// Only used when running on localhost.
-// On Netlify this is ignored — key stays on server.
-const LOCAL_API_KEY = 'YOUR_GROQ_API_KEY_HERE';
-// ─────────────────────────────────────────────
-
-const IS_LOCAL = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
-
 // ── DOM refs ──
 const pdfInput    = document.getElementById('pdf-input');
 const jobDesc     = document.getElementById('job-desc');
@@ -98,67 +90,7 @@ async function extractTextFromPDF(file) {
   return fullText.trim();
 }
 
-// ── Shared prompt ──
-function buildPrompt(resumeText, jobRequirements) {
-  return `Analyze the resume below against the job requirements and return a JSON report.
-
-=== JOB REQUIREMENTS ===
-${jobRequirements}
-
-=== RESUME TEXT ===
-${resumeText}
-
-Return ONLY this exact JSON structure, nothing else. No extra text, no markdown:
-{
-  "verdict": "Strong Match",
-  "score": 7,
-  "summary": "Two sentence summary here.",
-  "matched_keywords": ["keyword1", "keyword2"],
-  "missing_keywords": ["keyword1", "keyword2"],
-  "ats": { "formatting": 80, "keywords": 60, "readability": 90, "structure": 75 },
-  "issues": [
-    { "priority": "high", "area": "Skills", "problem": "problem here", "fix": "fix here" }
-  ],
-  "strengths": ["strength1", "strength2"],
-  "quick_wins": ["win1", "win2"]
-}
-Rules: issues 3–6 items high→low, matched/missing 4–10 items, strengths 3–5, quick_wins 3–4.`;
-}
-
-// ── STEP 2a: Call Groq directly (LOCAL only) ──
-async function analyzeLocal(resumeText, jobRequirements) {
-  const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type':  'application/json',
-      'Authorization': `Bearer ${LOCAL_API_KEY}`
-    },
-    body: JSON.stringify({
-      model: 'openai/gpt-oss-120b',
-      temperature: 0.1,   // lower = more predictable JSON output
-      max_tokens: 1500,
-      response_format: { type: 'json_object' }, // force JSON mode
-      messages: [
-        {
-          role: 'system',
-          content: 'You are a resume analysis expert. Always respond with valid JSON only. No markdown, no explanation.'
-        },
-        { role: 'user', content: buildPrompt(resumeText, jobRequirements) }
-      ]
-    })
-  });
-
-  if (!response.ok) {
-    const err = await response.json().catch(() => ({}));
-    throw new Error(err.error?.message || `Groq error ${response.status}`);
-  }
-
-  const data = await response.json();
-  const raw  = data.choices?.[0]?.message?.content || '';
-  return extractJSON(raw);
-}
-
-// ── STEP 2b: Call Netlify backend (PRODUCTION only) ──
+// ── STEP 2: Call backend (works on Netlify + locally via `netlify dev`) ──
 async function analyzeViaBackend(resumeText, jobRequirements) {
   const response = await fetch('/api/analyze', {
     method: 'POST',
@@ -186,9 +118,7 @@ analyzeBtn.addEventListener('click', async () => {
 
     loadingText.textContent = 'Analyzing with AI…';
 
-    const result = IS_LOCAL
-      ? await analyzeLocal(resumeText, jobDesc.value.trim())
-      : await analyzeViaBackend(resumeText, jobDesc.value.trim());
+    const result = await analyzeViaBackend(resumeText, jobDesc.value.trim());
 
     renderResults(result);
 
@@ -198,7 +128,7 @@ analyzeBtn.addEventListener('click', async () => {
 
     let msg = err.message;
     if (msg.includes('401') || msg.includes('invalid_api_key'))
-      msg = 'Invalid API key. Open app.js and check LOCAL_API_KEY on line 12.';
+      msg = 'API key error. Check your GROQ_API_KEY in Netlify environment variables.';
     else if (msg.includes('429') || msg.includes('rate_limit'))
       msg = 'Rate limit hit. Wait 30 seconds and try again.';
 
